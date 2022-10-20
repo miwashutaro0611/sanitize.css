@@ -132,7 +132,6 @@ See https://csstools.github.io/sanitize.css/latest/sanitize.css
 * Opera (last 2)
 * Safari (last 2)
 * iOS Safari (last 2)
-* Internet Explorer 9+
 
 ## Differences
 
@@ -173,7 +172,7 @@ maintained in sync.
 ##### Cursors only change to hint non-obvious interfaces
 
 ```css
-html {
+:where(:root) {
   cursor: default;
 }
 ```
@@ -181,7 +180,7 @@ html {
 ##### Text has a comfortable line height in all browsers
 
 ```css
-html {
+:where(:root) {
   line-height: 1.5;
 }
 ```
@@ -189,7 +188,8 @@ html {
 ##### Tabs appear the same on the web as in a typical editor
 
 ```css
-html {
+:where(:root) {
+  -moz-tab-size: 4;
   tab-size: 4;
 }
 ```
@@ -197,15 +197,15 @@ html {
 ##### Words break to prevent overflow
 
 ```css
-html {
-  word-break: break-all;
+:where(:root) {
+  overflow-wrap: break-word;
 }
 ```
 
 ##### Documents do not use a margin for outer padding
 
 ```css
-body {
+:where(body) {
   margin: 0;
 }
 ```
@@ -213,7 +213,7 @@ body {
 ##### Navigation lists do not include a marker style
 
 ```css
-nav ol, nav ul {
+:where(nav) :where(ol, ul) {
   list-style: none;
   padding: 0;
 }
@@ -222,7 +222,7 @@ nav ol, nav ul {
 ##### Media elements align to the text center of other content
 
 ```css
-audio, canvas, iframe, img, svg, video {
+:where(audio, canvas, iframe, img, svg, video) {
   vertical-align: middle;
 }
 ```
@@ -230,7 +230,7 @@ audio, canvas, iframe, img, svg, video {
 ##### SVGs fallback to the current text color
 
 ```css
-svg:not([fill]) {
+:where(svg:not([fill])) {
   fill: currentColor;
 }
 ```
@@ -238,7 +238,7 @@ svg:not([fill]) {
 ##### Tables do not include additional border spacing
 
 ```css
-table {
+:where(table) {
   border-collapse: collapse;
 }
 ```
@@ -246,32 +246,19 @@ table {
 ##### Textareas only resize vertically by default
 
 ```css
-textarea {
+:where(textarea) {
   resize: vertical;
-}
-```
-
-##### Single taps are dispatched immediately on clickable elements
-
-```css
-a, area, button, input, label, select, summary, textarea, [tabindex] {
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
 }
 ```
 
 ##### ARIA roles include visual cursor hints
 
 ```css
-[aria-busy="true"] {
+:where([aria-busy="true" i]) {
   cursor: progress;
 }
 
-[aria-controls] {
-  cursor: pointer;
-}
-
-[aria-disabled="true"], [disabled] {
+:where([aria-disabled="true" i], [disabled]) {
   cursor: default;
 }
 ```
@@ -279,11 +266,11 @@ a, area, button, input, label, select, summary, textarea, [tabindex] {
 ##### Visually hidden content remains accessible
 
 ```css
-[aria-hidden="false"][hidden] {
+:where([aria-hidden="false" i][hidden]) {
   display: initial;
 }
 
-[aria-hidden="false"][hidden]:not(:focus) {
+:where([aria-hidden="false" i][hidden]:not(:focus)) {
   clip: rect(0, 0, 0, 0);
   position: absolute;
 }
@@ -306,7 +293,7 @@ minimal, standards-like styling.
 ##### Form controls appear visually consistent and restyle consistently
 
 ```css
-button, input, select, textarea {
+:where(button, input, select, textarea) {
   background-color: transparent;
   border: 1px solid WindowFrame;
   color: inherit;
@@ -315,8 +302,7 @@ button, input, select, textarea {
   padding: 0.25em 0.375em;
 }
 
-[type="color"],
-[type="range"] {
+:where([type="color" i], [type="range" i]) {
   border-width: 0;
   padding: 0;
 }
@@ -336,18 +322,6 @@ select {
 select:not([multiple]):not([size]) {
   background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='4'%3E%3Cpath d='M4 0h6L7 4'/%3E%3C/svg%3E");
 }
-
-::-ms-expand {
-  display: none;
-}
-```
-
-##### Placeholders appear visually consistent in Internet Explorer
-
-```css
-:-ms-input-placeholder {
-  color: rgba(0, 0, 0, 0.54);
-}
 ```
 
 ## Assets
@@ -365,11 +339,7 @@ size of assets in all browsers.
 ##### Assets use a comfortable measure in all browsers
 
 ```css
-iframe,
-img,
-input,
-select,
-textarea {
+:where(iframe, img, input, video, select, textarea) {
   height: auto;
   max-width: 100%;
 }
